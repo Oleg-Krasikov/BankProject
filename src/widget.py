@@ -9,31 +9,41 @@ def mask_account_card(account_info: str) -> str:
     Маскирует номер карты или счета в переданной строке.
     """
 
-    def mask_card_number(card_number: str) -> str:
-        """Маскирует номер карты, оставляя первые 6 и последние 4 цифры"""
-        if len(card_number) < 10:
-            return card_number
-        return f"{card_number[:4]} {card_number[4:6]}** **** {card_number[-4:]}"
+    def mask_card_number(card_number: int) -> str:
+        """
+        Маскирует номер карты, оставляя первые 6 и последние 4 цифры, остальные заменяет на '*'
+        """
+        digits = str(card_number)  # Преобразуем число в строку
 
-    def mask_account_number(account_number: str) -> str:
-        """Маскирует номер счета, оставляя последние 4 цифры"""
-        if len(account_number) < 4:
-            return account_number
-        return f"**{account_number[-4:]}"
+        if len(digits) == 16:
+            return f"{digits[:4]} {digits[4:6]} **** {digits[-4:]}"
+        elif 16 < len(digits) <= 19:
+            return f"{digits[:4]} {digits[4:6]} ***** {digits[-4:]}"
+        else:
+            return "Номер карты должен содержать от 16 до 19 цифр"
+
+    def mask_account(account_number: int) -> str:
+        """
+        Маскирует номер счёта, оставляя только последние 4 цифры.
+        """
+        str_number = str(account_number)
+
+        if len(str_number) <= 4:
+            return "Номер счёта должен содержать минимум 4 цифры"
+        masked_part = "**" + str_number[-4:]
+        return masked_part
 
     # Разделяем строку на части (тип и номер)
     parts = account_info.split()
 
     # Проверяем, является ли последняя часть номером (содержит только цифры)
     if parts[-1].isdigit():
-        number = parts[-1]
+        number = int(parts[-1])  # Преобразуем строку в число перед передачей
         account_type = " ".join(parts[:-1])
-
         if account_type.lower() == "счет":
-            masked_number = mask_account_number(number)
+            masked_number = mask_account(number)
         else:
             masked_number = mask_card_number(number)
-
         return f"{account_type} {masked_number}"
     else:
         return "Некорректные данные"
