@@ -1,5 +1,6 @@
-from .masks import get_mask_account, get_mask_card_number
 from datetime import datetime
+
+from .masks import get_mask_account, get_mask_card_number
 
 account_info = input()
 date_string = input()
