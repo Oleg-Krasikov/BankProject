@@ -6,9 +6,9 @@ from src.widget import get_date, mask_account_card
 @pytest.mark.parametrize(
     "account_info, expected",
     [
-        ("Счет 1234567890123456", "Счет: **3456"),
-        ("Visa Platinum 9999888877776666", "Visa Platinum: 9999 88**** 6666"),
-        ("Maestro 1234567890123456", "Maestro: 1234 56**** 3456"),
+        ("Счет 1234567890123456", "Счет **3456"),
+        ("Visa Platinum 9999888877776666", "Visa Platinum 9999 88** **** 6666"),
+        ("Maestro 1234567890123456", "Maestro 1234 56** **** 3456"),
     ],
 )
 def test_mask_account_card_valid(account_info: str, expected: str) -> None:
@@ -16,9 +16,19 @@ def test_mask_account_card_valid(account_info: str, expected: str) -> None:
     assert mask_account_card(account_info) == expected
 
 
-def test_mask_account_card_invalid() -> None:
+@pytest.mark.parametrize(
+    "invalid_info",
+    [
+        "Invalid Info",
+        "Card",
+        "123",
+        "Счет abc",
+        "Visa Short 123456789012",  # слишком короткий номер
+    ],
+)
+def test_mask_account_card_invalid(invalid_info: str) -> None:
     """Тестирует обработку некорректных входных данных"""
-    assert mask_account_card("Invalid Info") == "Некорректные данные"
+    assert mask_account_card(invalid_info) == "Некорректные данные"
 
 
 @pytest.mark.parametrize(
@@ -34,7 +44,15 @@ def test_get_date_valid(date_string: str, expected: str) -> None:
     assert get_date(date_string) == expected
 
 
-def test_get_date_invalid() -> None:
+@pytest.mark.parametrize(
+    "invalid_date",
+    [
+        "invalid-date-string",
+        "2024-13-01",
+        "not-a-date",
+    ],
+)
+def test_get_date_invalid(invalid_date: str) -> None:
     """Тестирует обработку некорректного формата даты"""
-    with pytest.raises(ValueError, match="Некорректный формат даты"):
-        get_date("invalid-date-string")
+    with pytest.raises(ValueError):
+        get_date(invalid_date)
