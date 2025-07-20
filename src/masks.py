@@ -1,5 +1,5 @@
-card_number = input(int())
-account_number = input(int())
+card_number = 0
+account_number = 0
 
 
 def get_mask_card_number(card_number: int) -> str:
