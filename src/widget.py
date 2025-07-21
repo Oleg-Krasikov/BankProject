@@ -2,9 +2,6 @@ from datetime import datetime
 
 from src.masks import get_mask_account, get_mask_card_number
 
-account_info = input()
-date_string = input()
-
 
 def mask_account_card(account_info: str) -> str:
     """
@@ -12,15 +9,26 @@ def mask_account_card(account_info: str) -> str:
     """
 
     parts = account_info.split()
-    number_card = int(parts[-1])
-    if parts[-1].isdigit():
+    # Проверяем, что последняя часть - число
+    if not parts[-1].isdigit():
+        return "Некорректные данные"
+    try:
+        number = int(parts[-1])
         account_type = " ".join(parts[:-1])
-        if parts[0] == "Счет":
-            result = f"{account_type[:-1]}: {get_mask_account(number_card)}"
+        if account_type == "Счет":
+            masked_number = f"**{str(number)[-4:]}"
+            return f"{account_type} {masked_number}"
         else:
-            result = f"{account_type[:-1]}: {get_mask_card_number(number_card)}"
-        return result
-    else:
+            # Форматирование номера карты: XXXX XX** **** XXXX
+            card_number = str(number)
+            if len(card_number) != 16:
+                return "Некорректные данные"
+
+            masked = (
+                f"{card_number[:4]} {card_number[4:6]}** **** {card_number[-4:]}"
+            )
+            return f"{account_type} {masked}"
+    except ValueError:
         return "Некорректные данные"
 
 
