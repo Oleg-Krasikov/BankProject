@@ -24,9 +24,7 @@ def mask_account_card(account_info: str) -> str:
             if len(card_number) != 16:
                 return "Некорректные данные"
 
-            masked = (
-                f"{card_number[:4]} {card_number[4:6]}** **** {card_number[-4:]}"
-            )
+            masked = f"{card_number[:4]} {card_number[4:6]}** **** {card_number[-4:]}"
             return f"{account_type} {masked}"
     except ValueError:
         return "Некорректные данные"

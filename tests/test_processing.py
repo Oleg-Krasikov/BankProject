@@ -30,10 +30,7 @@ def sample_transactions() -> List[Dict[str, Any]]:
     ],
 )
 def test_filter_by_state(
-    sample_transactions: List[Dict[str, Any]],
-    state: str,
-    expected_count: int,
-    expected_ids: List[int]
+    sample_transactions: List[Dict[str, Any]], state: str, expected_count: int, expected_ids: List[int]
 ) -> None:
     """Параметризованный тест для функции filter_by_state"""
     # Для последнего тест-кейса используем пустой список
@@ -59,14 +56,10 @@ def test_filter_by_state_default(sample_transactions: List[Dict[str, Any]]) -> N
     "reverse, expected_ids",
     [
         (True, [41428829, 615064591, 594226727, 939719570]),  # По убыванию (новые сначала)
-        (False, [939719570, 594226727, 615064591, 41428829])  # По возрастанию (старые сначала)
-    ]
+        (False, [939719570, 594226727, 615064591, 41428829]),  # По возрастанию (старые сначала)
+    ],
 )
-def test_sort_by_date(
-    sample_transactions: List[Dict[str, Any]],
-    reverse: bool,
-    expected_ids: List[int]
-) -> None:
+def test_sort_by_date(sample_transactions: List[Dict[str, Any]], reverse: bool, expected_ids: List[int]) -> None:
     """Тестирование сортировки по дате с разными параметрами"""
     sorted_data = sort_by_date(sample_transactions, reverse=reverse)
     actual_ids = [item["id"] for item in sorted_data]

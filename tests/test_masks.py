@@ -11,37 +11,23 @@ def valid_card_numbers() -> List[Tuple[int, str]]:
         (7000792289606361, "7000 79** **** 6361"),
         (5105105105105100, "5105 10** **** 5100"),
         (4111111111111111, "4111 11** **** 1111"),
-        (1234567890123456789, "1234 56** ***** 6789")
+        (1234567890123456789, "1234 56** ***** 6789"),
     ]
 
 
 @pytest.fixture
 def invalid_card_numbers() -> List[Union[str, int]]:
-    return [
-        "1234",
-        "12345678901234567890",
-        "abcdefghijklmnop",
-        "1234 5678 9012 345",
-        12345
-    ]
+    return ["1234", "12345678901234567890", "abcdefghijklmnop", "1234 5678 9012 345", 12345]
 
 
 @pytest.fixture
 def valid_account_numbers() -> List[Tuple[int, str]]:
-    return [
-        (12345678, "**5678"),
-        (123400005678, "**5678"),
-        (99999999, "**9999")
-    ]
+    return [(12345678, "**5678"), (123400005678, "**5678"), (99999999, "**9999")]
 
 
 @pytest.fixture
 def invalid_account_numbers() -> List[Union[str, int]]:
-    return [
-        123,
-        "abc",
-        "1234abc"
-    ]
+    return [123, "abc", "1234abc"]
 
 
 def test_valid_card_numbers(valid_card_numbers: List[Tuple[int, str]]) -> None:
